@@ -10,12 +10,12 @@ class Interfce(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         
-        self._spusok_file()
-        self.ListItem()
-        self.fillle()
-        self.func()
+        self._file_path()
+        self._ListItem()
+        self._List_of_file()
+        self._write_list_widget()
         # self.file_name()
-        self.__mainText()
+        self._mainText()
         self._save_button()
         self._delete_button()
         self._add_button()
@@ -25,14 +25,14 @@ class Interfce(QMainWindow):
         self.setGeometry(350 ,200, 600 ,500)
         self.originalPalette = QApplication.palette()
 
-    def __mainText(self): 
+    def _mainText(self): 
         self.text = QtWidgets.QLabel(self)    
         self.text.setText("Назва / Заголовок" )
         self.text.move(270,15 )
         self.text.setFixedWidth(200)
         self.text.setFont(QFont('Arial', 18))
     
-    def ListItem (self):    
+    def _ListItem (self):    
         self.Qlist = QtWidgets.QListWidget(self)
         self.Qlist.move(10,10)
         self.Qlist.setFixedSize (150,430)  
@@ -69,7 +69,7 @@ class Interfce(QMainWindow):
         self.note_text.move(170,55)
         self.note_text.setFixedSize(400,385)
          
-    def _spusok_file(self):
+    def _file_path(self):
         absFilePath = os.path.abspath(__file__)
         pather, filename = os.path.split(absFilePath)
         if not os.path.isdir(pather + "/" + "note" ):
@@ -81,13 +81,13 @@ class Interfce(QMainWindow):
             path = (f'{pather}\\note') 
         self.pather = path
 
-    def fillle(self):            # List file in Directory
+    def _List_of_file(self):            # List file in Directory
         self.files = [os.path.splitext(filename)[0] for filename in os.listdir(self.pather)]
           
     # def file_name (self):
     #     self.name_file = str(self.Qlist.currentItem().text() + '.txt') 
         
-    def func(self):               # Write notes in the list widget
+    def _write_list_widget(self):               # Write notes in the list widget
         for n in self.files:       
             QListWidgetItem(n, self.Qlist)
 
