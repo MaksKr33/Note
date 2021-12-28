@@ -69,7 +69,7 @@ class Interfce(QMainWindow):
         self.note_text.move(170,55)
         self.note_text.setFixedSize(400,385)
          
-    def _file_path(self):
+    def _file_path(self):           #  The path to the file folder
         absFilePath = os.path.abspath(__file__)
         pather, filename = os.path.split(absFilePath)
         if not os.path.isdir(pather + "/" + "note" ):
