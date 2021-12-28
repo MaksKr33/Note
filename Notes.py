@@ -26,40 +26,40 @@ class Interfce(QMainWindow):
         self.originalPalette = QApplication.palette()
 
     def _mainText(self): 
-        self.text = QtWidgets.QLabel(self)    
-        self.text.setText("Назва / Заголовок" )
-        self.text.move(270,15 )
-        self.text.setFixedWidth(200)
-        self.text.setFont(QFont('Arial', 18))
+        self.mainText = QtWidgets.QLabel(self)    
+        self.mainText.setText("Назва / Заголовок" )
+        self.mainText.move(270,15 )
+        self.mainText.setFixedWidth(200)
+        self.mainText.setFont(QFont('Arial', 18))
     
     def _ListItem (self):    
-        self.Qlist = QtWidgets.QListWidget(self)
-        self.Qlist.move(10,10)
-        self.Qlist.setFixedSize (150,430)  
-        self.Qlist.itemActivated.connect(self.open_file)
-        self.Qlist.setFont(QFont('Arial', 14))
-        self.Qlist.setStyleSheet("background-color: #E0FFFF")
+        self.ListItem = QtWidgets.QListWidget(self)
+        self.ListItem.move(10,10)
+        self.ListItem.setFixedSize (150,430)  
+        self.ListItem.itemActivated.connect(self.open_file)
+        self.ListItem.setFont(QFont('Arial', 14))
+        self.ListItem.setStyleSheet("background-color: #E0FFFF")
        
     def _save_button (self):
-        self.save = QPushButton(self)
-        self.save.move(270,460)
-        self.save.setText('Save')
-        self.save.setFont(QFont('Arial', 14))
-        self.save.clicked.connect(self.save_file)
+        self.save_button = QPushButton(self)
+        self.save_button.move(270,460)
+        self.save_button.setText('Save')
+        self.save_button.setFont(QFont('Arial', 14))
+        self.save_button.clicked.connect(self.save_file)
 
     def _delete_button (self):
-        self.delete = QPushButton(self)
-        self.delete.move(430,460)
-        self.delete.setText('Delete')
-        self.delete.setFont(QFont('Arial', 14))
-        self.delete.clicked.connect(self.removeSel)
+        self.delete_button = QPushButton(self)
+        self.delete_button.move(430,460)
+        self.delete_button.setText('Delete')
+        self.delete_button.setFont(QFont('Arial', 14))
+        self.delete_button.clicked.connect(self.removeSel)
 
     def _add_button (self):
-        self.add = QPushButton(self)
-        self.add.move(40,460)
-        self.add.setText('+')
-        self.add.setFont(QFont('Arial',18))
-        self.add.clicked.connect(self.new_file)
+       self.add_button = QPushButton(self)
+       self.add_button.move(40,460)
+       self.add_button.setText('+')
+       self.add_button.setFont(QFont('Arial',18))
+       self.add_button.clicked.connect(self.new_file)
 
     def _note_text(self):
         self.note_text  = QtWidgets.QTextEdit(self)
@@ -79,28 +79,28 @@ class Interfce(QMainWindow):
             path = (f'{pather}\\note')
         else:
             path = (f'{pather}\\note') 
-        self.pather = path
+        self.file_path = path
 
     def _List_of_file(self):            # List file in Directory
-        self.files = [os.path.splitext(filename)[0] for filename in os.listdir(self.pather)]
+        self.List_of_file = [os.path.splitext(filename)[0] for filename in os.listdir(self.file_path)]
           
     # def file_name (self):
-    #     self.name_file = str(self.Qlist.currentItem().text() + '.txt') 
+    #     self.name_file = str(self.ListItem.currentItem().text() + '.txt') 
         
     def _write_list_widget(self):               # Write notes in the list widget
-        for n in self.files:       
-            QListWidgetItem(n, self.Qlist)
+        for n in self.List_of_file:       
+            QListWidgetItem(n, self.ListItem)
 
     def open_file (self):         # Open the file for reading
-        self.name_file = str(self.Qlist.currentItem().text() + '.txt')
-        f = open(f'{self.pather}\\{self.name_file}', 'r')
+        self.name_file = str(self.ListItem.currentItem().text() + '.txt')
+        f = open(f'{self.file_path}\\{self.name_file}', 'r')
         with f:
             date = f.read()
         self.note_text.setText(date)
        
     def save_file(self):         # Save the file (note)
-        self.name_file = str(self.Qlist.currentItem().text() + '.txt')
-        f = open(f'{self.pather}\\{self.name_file}', 'w' )
+        self.name_file = str(self.ListItem.currentItem().text() + '.txt')
+        f = open(f'{self.file_path}\\{self.name_file}', 'w' )
         text = self.note_text.toPlainText()
         f.write(text)
         f.close()
@@ -109,17 +109,17 @@ class Interfce(QMainWindow):
         self.note_text.clear()
         text, ok = QInputDialog.getText(self, 'New_Note', 'Назва нової нотатки')
         if  ok :
-            QListWidgetItem(text, self.Qlist)    
+            QListWidgetItem(text, self.ListItem)    
        
     def removeSel(self):          # Delete the file (note)
-        self.name_file = str(self.Qlist.currentItem().text() + '.txt')
-        os.remove(f'{self.pather}\\{self.name_file}')
+        self.name_file = str(self.ListItem.currentItem().text() + '.txt')
+        os.remove(f'{self.file_path}\\{self.name_file}')
         self.note_text.clear()
         
-        listItems=self.Qlist.selectedItems()
+        listItems=self.ListItem.selectedItems()
         if not listItems: return        
         for item in listItems:
-            self.Qlist.takeItem(self.Qlist.row(item))
+            self.ListItem.takeItem(self.ListItem.row(item))
         
 
 def note ():
