@@ -61,13 +61,13 @@ class Interfce(QMainWindow):
        self.add_button.setFont(QFont('Arial',18))
        self.add_button.clicked.connect(self.new_file)
 
-    def _note_text(self):
-        self.note_text  = QtWidgets.QTextEdit(self)
-        self.note_text.setStyleSheet("background-color: #FFFF99")
-        self.note_text.setObjectName("plainTextEdit")
-        self.note_text.setFont(QFont('Arial',12))
-        self.note_text.move(170,55)
-        self.note_text.setFixedSize(400,385)
+    def _TextEdit(self):
+        self.TextEdit  = QtWidgets.QTextEdit(self)
+        self.TextEdit.setStyleSheet("background-color: #FFFF99")
+        self.TextEdit.setObjectName("plainTextEdit")
+        self.TextEdit.setFont(QFont('Arial',12))
+        self.TextEdit.move(170,55)
+        self.TextEdit.setFixedSize(400,385)
          
     def _file_path(self):           #  The path to the file folder
         absFilePath = os.path.abspath(__file__)
@@ -96,17 +96,17 @@ class Interfce(QMainWindow):
         f = open(f'{self.file_path}\\{self.name_file}', 'r')
         with f:
             date = f.read()
-        self.note_text.setText(date)
+        self.TextEdit.setText(date)
        
     def save_file(self):         # Save the file (note)
         self.name_file = str(self.ListItem.currentItem().text() + '.txt')
         f = open(f'{self.file_path}\\{self.name_file}', 'w' )
-        text = self.note_text.toPlainText()
+        text = self.TextEdit.toPlainText()
         f.write(text)
         f.close()
     
     def new_file (self):          # Create a new file (note)
-        self.note_text.clear()
+        self.TextEdit.clear()
         text, ok = QInputDialog.getText(self, 'New_Note', 'Назва нової нотатки')
         if  ok :
             QListWidgetItem(text, self.ListItem)    
@@ -114,7 +114,7 @@ class Interfce(QMainWindow):
     def removeSel(self):          # Delete the file (note)
         self.name_file = str(self.ListItem.currentItem().text() + '.txt')
         os.remove(f'{self.file_path}\\{self.name_file}')
-        self.note_text.clear()
+        self.TextEdit.clear()
         
         listItems=self.ListItem.selectedItems()
         if not listItems: return        
