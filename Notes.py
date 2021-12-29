@@ -1,3 +1,4 @@
+
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QInputDialog,  QMainWindow, QHBoxLayout, QApplication, QPushButton,  QListWidgetItem, QPlainTextEdit
@@ -19,7 +20,7 @@ class Interfce(QMainWindow):
         self._save_button()
         self._delete_button()
         self._add_button()
-        self._note_text()
+        self._TextEdit()
         
         self.setWindowTitle ('Нотатки')
         self.setGeometry(350 ,200, 600 ,500)
@@ -69,16 +70,15 @@ class Interfce(QMainWindow):
         self.TextEdit.move(170,55)
         self.TextEdit.setFixedSize(400,385)
          
-    def _file_path(self):           #  The path to the file folder
+    def _file_path(self):
         absFilePath = os.path.abspath(__file__)
         pather, filename = os.path.split(absFilePath)
         if not os.path.isdir(pather + "/" + "note" ):
             os.chdir(pather)
             os.mkdir("note")
-            print(pather)
-            path = (f'{pather}\\note')
-        else:
-            path = (f'{pather}\\note') 
+            # print(pather)
+            
+        path = (f'{pather}\\note') 
         self.file_path = path
 
     def _List_of_file(self):            # List file in Directory
@@ -97,28 +97,39 @@ class Interfce(QMainWindow):
         with f:
             date = f.read()
         self.TextEdit.setText(date)
+        
+        # list=self.ListItem.selectedItems()
+        # if not list: return        
+        # for item in list:
+        #     self.ListItem.takeItem(self.ListItem.addAction.item)
+        
        
     def save_file(self):         # Save the file (note)
         self.name_file = str(self.ListItem.currentItem().text() + '.txt')
-        f = open(f'{self.file_path}\\{self.name_file}', 'w' )
-        text = self.TextEdit.toPlainText()
-        f.write(text)
-        f.close()
+        f = open(f'{self.file_path}\\{self.name_file}', 'w')
+        text =  self.TextEdit.toPlainText()
+        with f:
+            date =  f.write(text)
     
     def new_file (self):          # Create a new file (note)
         self.TextEdit.clear()
         text, ok = QInputDialog.getText(self, 'New_Note', 'Назва нової нотатки')
         if  ok :
-            QListWidgetItem(text, self.ListItem)    
+            self.List_of_file.append(text)
+            self.ListItem.clear()
+            self._write_list_widget()
+            self.ListItem.setCurrentRow(len(self.List_of_file) - 1)
+
+        # self.ListItem.itemActivated(text) 
        
     def removeSel(self):          # Delete the file (note)
         self.name_file = str(self.ListItem.currentItem().text() + '.txt')
         os.remove(f'{self.file_path}\\{self.name_file}')
         self.TextEdit.clear()
         
-        listItems=self.ListItem.selectedItems()
-        if not listItems: return        
-        for item in listItems:
+        list=self.ListItem.selectedItems()
+        if not list: return        
+        for item in list:
             self.ListItem.takeItem(self.ListItem.row(item))
         
 
@@ -130,3 +141,4 @@ def note ():
 
 if __name__ == '__main__': 
     note()
+
